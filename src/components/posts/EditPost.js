@@ -1,36 +1,36 @@
 
 import { useParams } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { useEffect, useState } from "react"
-import { setLoading,editPost } from "../../actions/posts/postActions"
+import {  editPost } from "../../redux/features/postsSlice"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 
 
 const EditPost = () => {
-  const { loading } = useSelector(state => state.post)
   const dispatch = useDispatch()
   const { id } = useParams()
   const navigate = useNavigate()
   const [body, setBody] = useState('')
   const [title, setTitle] = useState('')
+  const [loading, setLoading] = useState(true)
+
 
   useEffect(() => {
     const setCurrent = async (id) => {
-      dispatch(setLoading(true))
       const res = await axios.get(`http://localhost:3004/posts/${id}`)
       setBody(res.data.body)
       setTitle(res.data.title)
-      dispatch(setLoading(false))
+      setLoading(false)
     }
     setCurrent(id)
   }, [dispatch, id])
 
-  const UpdatePost = (e)=>{
+  const UpdatePost = (e) => {
     e.preventDefault()
-    const data =  {
+    const data = {
       body,
-      title, 
+      title,
       id
     }
     dispatch(editPost(data))
@@ -39,7 +39,7 @@ const EditPost = () => {
 
   return (
     <>
-      {loading ? <h2>Loading...</h2> : <form onSubmit={(e)=>UpdatePost(e)}>
+      {loading ? <h2>Loading...</h2> : <form onSubmit={(e) => UpdatePost(e)}>
         <div className="form-group">
           <label htmlFor="exampleInputEmail1">title</label>
           <input value={title} type="text" className="form-control" placeholder="enter title" onChange={(e) => setTitle(e.target.value)} />

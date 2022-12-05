@@ -1,7 +1,7 @@
 
 import { useSelector, useDispatch } from "react-redux"
 import { useState } from "react"
-import { createPost } from "../../actions/posts/postActions"
+import { createPost } from "../../redux/features/postsSlice"
 import { useNavigate } from "react-router-dom"
 
 
